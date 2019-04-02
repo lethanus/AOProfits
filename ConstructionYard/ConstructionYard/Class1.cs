@@ -11,50 +11,50 @@ namespace ConstructionYard
     public class Class1
     {
 
-        [TestCase(10, new double[] { 5.8, 7.1, 9.2 }, 58)]
-        public void CalcMinValue(int itemCount, double[] itemPrices, double expectedMinValue)
+        [TestCase(10, new int[] { 58, 71, 92 }, 580)]
+        public void CalcMinValue(int itemCount, int[] itemPrices, int expectedMinValue)
         {
-            double minValue = MinValue(itemCount, itemPrices);
+            int minValue = MinValue(itemCount, itemPrices);
 
             Assert.AreEqual(expectedMinValue, minValue);
         }
 
-        [TestCase(10, new double[] { 5.8, 7.1, 9.2 }, 116)]
-        public void CalcMinValueForTheStoneBlock2(int itemCount, double[] itemPrices, double expectedMinValue)
+        [TestCase(10, new int[] { 58, 71, 92 }, 1160)]
+        public void CalcMinValueForTheStoneBlock2(int itemCount, int[] itemPrices, int expectedMinValue)
         {
 
-            double minValue = MinValue(itemCount, itemPrices);
+            int minValue = MinValue(itemCount, itemPrices);
 
-            double stoneBlockPV = minValue * 2;
+            int stoneBlockPV = minValue * 2;
 
             Assert.AreEqual(expectedMinValue, stoneBlockPV);
         }
 
-        [TestCase(10, new double[] { 5.8, 7.1, 9.2 }, 92)]
-        public void CalcMaxValue(int itemCount, double[] itemPrices, double expectedMaxValue)
+        [TestCase(10, new int[] { 58, 71, 92 }, 920)]
+        public void CalcMaxValue(int itemCount, int[] itemPrices, int expectedMaxValue)
         {
-            double minValue = MaxValue(itemCount, itemPrices);
+            int minValue = MaxValue(itemCount, itemPrices);
 
             Assert.AreEqual(expectedMaxValue, minValue);
         }
 
-        [TestCase(10, new double[] { 5.8, 7.1, 9.2 }, 184)]
-        public void CalcMaxValueForTheStoneBlock2(int itemCount, double[] itemPrices, double expectedMaxValue)
+        [TestCase(10, new int[] { 58, 71, 92 }, 1840)]
+        public void CalcMaxValueForTheStoneBlock2(int itemCount, int[] itemPrices, int expectedMaxValue)
         {
 
-            double minValue = MaxValue(itemCount, itemPrices);
+            int minValue = MaxValue(itemCount, itemPrices);
 
-            double stoneBlockPV = minValue * 2;
+            int stoneBlockPV = minValue * 2;
 
             Assert.AreEqual(expectedMaxValue, stoneBlockPV);
         }
 
-        private double MinValue(int count, double[] prices)
+        private int MinValue(int count, int[] prices)
         {
             return count * prices.Min();
         }
 
-        private double MaxValue(int count, double[] prices)
+        private int MaxValue(int count, int[] prices)
         {
             return count * prices.Max();
         }
