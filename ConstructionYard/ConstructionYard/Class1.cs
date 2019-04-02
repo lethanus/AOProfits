@@ -10,28 +10,29 @@ namespace ConstructionYard
 {
     public class Class1
     {
-        [Test]
-        public void CalculatingPV()
+        [TestCase(10,5.8,58)]
+        public void CalculatingPV(int itemCount, double itemValue, double expectedPV)
         {
-            int itemCount = 10;
-            double itemValue = 5.8;
+            double pv = PV(itemCount, itemValue);
 
-            double pv = itemCount * itemValue;
-
-            Assert.AreEqual(58, pv);
+            Assert.AreEqual(expectedPV, pv);
         }
 
-        [Test]
-        public void CalculatingPVForTheStoneBlock2()
+        [TestCase(10, 5.8, 116)]
+        public void CalculatingPVForTheStoneBlock2(int itemCount, double itemValue, double expectedPV)
         {
-            int itemCount = 10;
-            double itemValue = 5.8;
 
-            double pv = itemCount * itemValue;
+            double pv = PV(itemCount, itemValue);
 
             double stoneBlockPV = pv * 2;
 
-            Assert.AreEqual(116, stoneBlockPV);
+            Assert.AreEqual(expectedPV, stoneBlockPV);
+        }
+
+
+        private double PV(int count, double price)
+        {
+            return count * price;
         }
     }
 }
