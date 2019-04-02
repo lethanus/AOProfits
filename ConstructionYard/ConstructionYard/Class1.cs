@@ -19,13 +19,13 @@ namespace ConstructionYard
             Assert.AreEqual(expectedMinValue, minValue);
         }
 
-        [TestCase(10, "Rock2", 1160)]
+        [TestCase(10, "Rock2", 580)]
         public void CalcMinValueForTheStoneBlock2(int itemCount, string productCode, int expectedMinValue)
         {
 
             int minValue = MinValue(itemCount, GetPrices(productCode));
 
-            int stoneBlockPV = minValue * 2;
+            int stoneBlockPV = minValue * 1;
 
             Assert.AreEqual(expectedMinValue, stoneBlockPV);
         }
@@ -38,13 +38,13 @@ namespace ConstructionYard
             Assert.AreEqual(expectedMaxValue, minValue);
         }
 
-        [TestCase(10, "Rock2", 1840)]
+        [TestCase(10, "Rock2", 920)]
         public void CalcMaxValueForTheStoneBlock2(int itemCount, string productCode, int expectedMaxValue)
         {
 
             int minValue = MaxValue(itemCount, GetPrices(productCode));
 
-            int stoneBlockPV = minValue * 2;
+            int stoneBlockPV = minValue * 1;
 
             Assert.AreEqual(expectedMaxValue, stoneBlockPV);
         }
