@@ -20,5 +20,18 @@ namespace ConstructionYard
 
             Assert.AreEqual(58, pv);
         }
+
+        [Test]
+        public void CalculatingPVForTheStoneBlock2()
+        {
+            int itemCount = 10;
+            double itemValue = 5.8;
+
+            double pv = itemCount * itemValue;
+
+            double stoneBlockPV = pv * 2;
+
+            Assert.AreEqual(116, stoneBlockPV);
+        }
     }
 }
