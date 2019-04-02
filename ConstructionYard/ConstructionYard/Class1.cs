@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit;
+using NUnit.Framework;
 
 namespace ConstructionYard
 {
     public class Class1
     {
-
-        public void Test()
+        [Test]
+        public void CalculatingPV()
         {
+            int itemCount = 10;
+            double itemValue = 5.8;
 
+            double pv = itemCount * itemValue;
+
+            Assert.AreEqual(58, pv);
         }
     }
 }

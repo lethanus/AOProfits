@@ -262,3 +262,10 @@ __pycache__/
 ConstructionYard/ConstructionYard/obj/Debug/ConstructionYard.csprojAssemblyReference.cache
 *.ide-shm
 ConstructionYard/.vs/ConstructionYard/v15/.suo
+*.cache
+ConstructionYard/.vs/ConstructionYard/v15/.suo
+ConstructionYard/.vs/ConstructionYard/v15/.suo
+*.cache
+*.ide
+*.ide-shm
+*.ide-wal
