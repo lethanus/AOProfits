@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+ConstructionYard/ConstructionYard/obj/Debug/ConstructionYard.csprojAssemblyReference.cache
+*.ide-shm
+ConstructionYard/.vs/ConstructionYard/v15/.suo
