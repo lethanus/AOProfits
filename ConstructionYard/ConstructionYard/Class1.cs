@@ -39,6 +39,7 @@ namespace ConstructionYard
         }
 
         [TestCase(10, "Rock2", 920)]
+        [TestCase(10, "Rock3", 1840+920)]
         public void CalcMaxValueForTheStoneBlock2(int itemCount, string productCode, int expectedMaxValue)
         {
 
@@ -61,7 +62,12 @@ namespace ConstructionYard
 
         private IEnumerable<int> GetPrices(string itemName)
         {
-            return new int[] { 58, 71, 92 };
+            switch(itemName)
+            {
+                case "Rock2": return new int[] { 58, 71, 92 }; break;
+                case "Rock3": return new int[] { 58, 71, 92 }; break;
+            }
+            return null;
         }
     }
 }
