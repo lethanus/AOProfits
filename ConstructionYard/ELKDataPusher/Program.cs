@@ -28,15 +28,8 @@ namespace ELKDataPusher
         static private void PushData(DateTime dateTime, ELKPusher eLKPusher, string fileName)
         {
             var now = dateTime;
-            var items = File.ReadAllLines(fileName).Where(x => !x.StartsWith("===")).Select(x => x.Split(',')).Select(x => new AlbionData
-            {
-                Id = Int32.Parse($"{now.Month}{now.Day}{now.Hour}{now.Minute}"),
-                ItemName = x[0],
-                Tier = Int32.Parse(x[1]),
-                Location = x[2],
-                Price = Int32.Parse(x[3]),
-                PushTime = now
-            }).ToList();
+            var items = File.ReadAllLines(fileName).Where(x => !x.StartsWith("===")).Select(x => x.Split(',')).Select(x => 
+                new AlbionData( x[0], now, x[1], Int32.Parse(x[2]))).ToList();
             eLKPusher.PushItemData(items);
 
         }
