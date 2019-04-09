@@ -15,11 +15,11 @@ namespace ELKDataPusher
             ELKPusher eLKPusher = new ELKPusher();
             var now = DateTime.Now;
 
-            PushData(now.AddDays(-1), eLKPusher, @"C:\Emil\Projects\AlbionData\data_2019_04_09.txt");
-            PushData(now, eLKPusher, @"C:\Emil\Projects\AlbionData\data.txt");
+            //PushData(now.AddDays(-1), eLKPusher, @"C:\Emil\Projects\AlbionData\data_2019_04_09.txt");
+            //PushData(now, eLKPusher, @"C:\Emil\Projects\AlbionData\data.txt");
 
-            
-            //CalculateProfits(DateTime.Today, eLKPusher);
+            CalculateProfits(now.AddDays(-1), eLKPusher);
+            CalculateProfits(now, eLKPusher);
 
 
 
@@ -29,7 +29,7 @@ namespace ELKDataPusher
         {
             var now = dateTime;
             var items = File.ReadAllLines(fileName).Where(x => !x.StartsWith("===")).Select(x => x.Split(',')).Select(x => 
-                new AlbionData( x[0], now, x[1], Int32.Parse(x[2]))).ToList();
+                new AlbionItemData( x[0], now, x[1], Int32.Parse(x[2]))).ToList();
             eLKPusher.PushItemData(items);
 
         }
@@ -37,11 +37,10 @@ namespace ELKDataPusher
         static private void CalculateProfits(DateTime dateTime, ELKPusher eLKPusher)
         {
 
-            var res = eLKPusher.GetData("albion-item", dateTime);
-            var now = DateTime.Now;
+            var res = eLKPusher.GetItemData("albion-item", dateTime);
             var grouped = res.GroupBy(x => x.ItemName).ToDictionary(g => g.Key, g => g.ToList());
 
-            var comparisons = new List<AlbionDataComparison>();
+            var comparisons = new List<AlbionItemDataComparison>();
             foreach (var key in grouped.Keys)
             {
                 var group = grouped[key];
@@ -56,18 +55,7 @@ namespace ELKDataPusher
                         {
                             var otherItem = byLocations[otherLocation].OrderByDescending(x => x.PushTime).First();
                             //Console.WriteLine($"{item.ItemName} price = {item.Price} in {item.Location} vs price = {otherItem.Price} in {otherItem.Location} - ABS diff = {Math.Abs(item.Price-otherItem.Price)}");
-                            comparisons.Add(new AlbionDataComparison
-                            {
-                                Id = Int32.Parse($"{now.Month}{now.Day}{now.Hour}{now.Minute}"),
-                                ItemName = item.ItemName,
-                                PriceSource = item.Price,
-                                LocationSource = item.Location,
-                                PriceDestanation = otherItem.Price,
-                                LocationDestanation = otherItem.Location,
-                                Tier = item.Tier,
-                                PushTime = item.PushTime,
-                                BuyInSourceSellInDestanationProfit = otherItem.Price - item.Price
-                            });
+                            comparisons.Add(new AlbionItemDataComparison(item, otherItem, dateTime));
                         }
                     }
                 }

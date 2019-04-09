@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlbionItemData.cs" />
+    <Compile Include="AlbionItemDataComparison.cs" />
+    <Compile Include="AlbionItemMappings.cs" />
+    <Compile Include="AlbionItemMappingsHelper.cs" />
     <Compile Include="ELKPusher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
