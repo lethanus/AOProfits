@@ -4,7 +4,7 @@ namespace ELKDataPusher
 {
     public class AlbionItemDataComparison
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime PushTime { get; set; }
         public string ItemName { get; set; }
         public int PriceSource { get; set; }
@@ -22,10 +22,10 @@ namespace ELKDataPusher
             ItemName = source.ItemName;
             PushTime = pushTime;
             LocationSource = source.Location;
-            PriceSource = source.Price;
-            PriceDestanation = desination.Price;
+            PriceSource = source.MinPrice;
+            PriceDestanation = desination.MinPrice;
             LocationDestanation = desination.Location;
-            Id = Int32.Parse($"{pushTime.Month}{pushTime.Day}{pushTime.Hour}{pushTime.Minute}");
+            Id = long.Parse($"{pushTime.Month}{pushTime.Day}{pushTime.Hour}{pushTime.Minute}");
             Tier = source.Tier;
             Category = source.Category;
             Bussines = source.Bussines;

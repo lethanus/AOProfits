@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace ELKDataPusher
 {
@@ -15,16 +15,30 @@ namespace ELKDataPusher
             ELKPusher eLKPusher = new ELKPusher();
             var now = DateTime.Now;
 
-            //PushData(now.AddDays(-1), eLKPusher, @"C:\Emil\Projects\AlbionData\data_2019_04_09.txt");
-            //PushData(now, eLKPusher, @"C:\Emil\Projects\AlbionData\data.txt");
+            //PushData(new DateTime(2019, 4, 9, 10, 10, 10), eLKPusher, @"C:\Emil\Projects\AlbionData\data_2019_04_09.txt");
+            //PushData(new DateTime(2019, 4, 10, 10, 10, 10), eLKPusher, @"C:\Emil\Projects\AlbionData\data_2019_04_10.txt");
+            //PushData(new DateTime(2019, 4, 11, 10, 10, 10), eLKPusher, @"C:\Emil\Projects\AlbionData\data_2019_04_11.txt");
+            //PushData(new DateTime(2019, 4, 12, 10, 10, 10), eLKPusher, @"C:\Emil\Projects\AlbionData\data_2019_04_12.txt");
 
-            CalculateProfits(now.AddDays(-1), eLKPusher);
-            CalculateProfits(now, eLKPusher);
+            /*
+            CalculateProfits(new DateTime(2019, 4, 9, 10, 10, 10), eLKPusher);
+            CalculateProfits(new DateTime(2019, 4, 10, 10, 10, 10), eLKPusher);
+            CalculateProfits(new DateTime(2019, 4, 11, 10, 10, 10), eLKPusher);
+            CalculateProfits(new DateTime(2019, 4, 12, 10, 10, 10), eLKPusher);
+            */
+            var allCodes = AlbionItemMappingsHelper.GetAllCodes();
 
+            var dataProvider = new AlbionOnlineDataProvider();
 
-
+            foreach (var code in allCodes)
+            {
+                var items = dataProvider.GetData(code);
+                eLKPusher.PushItemData(items);
+            }
+            Console.WriteLine($"Done for {allCodes.Count} codes !!!");
             Console.ReadLine();
         }
+        /*
         static private void PushData(DateTime dateTime, ELKPusher eLKPusher, string fileName)
         {
             var now = dateTime;
@@ -33,7 +47,7 @@ namespace ELKDataPusher
             eLKPusher.PushItemData(items);
 
         }
-
+        */
         static private void CalculateProfits(DateTime dateTime, ELKPusher eLKPusher)
         {
 

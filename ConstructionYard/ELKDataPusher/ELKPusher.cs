@@ -24,31 +24,32 @@ namespace ELKDataPusher
         }
         public void PushItemData(ICollection<AlbionItemData> dataToPush, bool recreate = false)
         {
-            string indexName = "albion-item";
-            var client = CreateClient(indexName);
-            var indexConfig = new IndexState
+            if (dataToPush.Count > 0)
             {
-                Settings = new IndexSettings { NumberOfReplicas = 0, NumberOfShards = 2}
-            };
-            if (client.IndexExists(indexName).Exists && recreate)
-            {
-                client.DeleteIndex(indexName);
-            }
+                string indexName = "albion-item";
+                var client = CreateClient(indexName);
+                var indexConfig = new IndexState
+                {
+                    Settings = new IndexSettings { NumberOfReplicas = 0, NumberOfShards = 2 }
+                };
+                if (client.IndexExists(indexName).Exists && recreate)
+                {
+                    client.DeleteIndex(indexName);
+                }
 
-            if (!client.IndexExists(indexName).Exists)
-            {
-                client.CreateIndex(indexName, j => j
-                .InitializeUsing(indexConfig)
-                .Mappings(m => m.Map<AlbionItemData>(mp => mp.AutoMap())));
+                if (!client.IndexExists(indexName).Exists)
+                {
+                    client.CreateIndex(indexName, j => j
+                    .InitializeUsing(indexConfig)
+                    .Mappings(m => m.Map<AlbionItemData>(mp => mp.AutoMap())));
+                }
+                foreach (var obj in dataToPush)
+                {
+                    client.IndexDocument<AlbionItemData>(obj);
+                    //Console.WriteLine("Done!!! " + obj);
+                }
+                Console.WriteLine($"Writen {dataToPush.Count} items for index = {indexName}");
             }
-            int i = 0;
-            foreach (var obj in dataToPush)
-            {
-                obj.Id = Int32.Parse($"{obj.Id}{i++}");
-                client.IndexDocument<AlbionItemData>(obj);
-                //Console.WriteLine("Done!!! " + obj);
-            }
-            Console.WriteLine($"Writen {dataToPush.Count} items for index = {indexName}");
         }
 
         public void PushItemComparisonData(ICollection<AlbionItemDataComparison> dataToPush, bool recreate = false)
@@ -70,10 +71,8 @@ namespace ELKDataPusher
                 .InitializeUsing(indexConfig)
                 .Mappings(m => m.Map<AlbionItemDataComparison>(mp => mp.AutoMap())));
             }
-            int i = 0;
             foreach (var obj in dataToPush)
             {
-                obj.Id = Int32.Parse($"{obj.Id}{i++}");
                 client.IndexDocument<AlbionItemDataComparison>(obj);
                 //Console.WriteLine("Done!!! " + obj);
             }

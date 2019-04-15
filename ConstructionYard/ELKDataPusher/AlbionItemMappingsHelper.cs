@@ -9,28 +9,34 @@ namespace ELKDataPusher
     {
         private static string path = @"C:\Emil\Projects\AlbionData\itemCategories.txt";
         private static Dictionary<string, AlbionItemMappings> mappings = new Dictionary<string, AlbionItemMappings>();
-        public static int GetItemTier(string name)
+
+        public static List<string> GetAllCodes()
         {
-            var cleanName = name.Replace("[U]", "").Replace("[R]", "").Replace("[E]", "").Trim();
             LoadMappings();
-            var key = mappings.Keys.First(x => x.Contains(cleanName));
-            return mappings[key].Tier;
+            return mappings.Keys.ToList();
+        }
+        public static int GetItemTier(string itemCode)
+        {
+            LoadMappings();
+            return mappings[itemCode].Tier;
         }
 
-        public static string GetItemCategory(string name)
+        public static string GetItemCategory(string itemCode)
         {
-            var cleanName = name.Replace("[U]", "").Replace("[R]", "").Replace("[E]", "").Trim();
             LoadMappings();
-            var key = mappings.Keys.First(x => x.Contains(cleanName));
-            return mappings[key].Category;
+            return mappings[itemCode].Category;
         }
 
-        public static string GetItemBussines(string name)
+        internal static string GetItemName(string itemCode)
         {
-            var cleanName = name.Replace("[U]", "").Replace("[R]", "").Replace("[E]", "").Trim();
             LoadMappings();
-            var key = mappings.Keys.First(x => x.Contains(cleanName));
-            return mappings[key].Bussines;
+            return mappings[itemCode].ItemName;
+        }
+
+        public static string GetItemBussines(string itemCode)
+        {
+            LoadMappings();
+            return mappings[itemCode].Bussines;
         }
 
         private static void LoadMappings()
@@ -38,14 +44,70 @@ namespace ELKDataPusher
             if(mappings.Keys.Count == 0)
             {
                 var lines = File.ReadAllLines(path);
-                mappings = lines.Select(x => x.Split(',')).Select(x => new AlbionItemMappings
+                var results = lines.Select(x => x.Split(',')).Select(x => new AlbionItemMappings
                 {
-                    ItemName = x[0],
-                    Category = x[1],
-                    Bussines = x[2],
-                    Tier = Int32.Parse(x[3])
+                    ItemCode = x[0],
+                    ItemName = x[1],
+                    Category = x[2],
+                    Bussines = x[3],
+                    Tier = Int32.Parse(x[4])
                 }
-                ).ToDictionary(x => x.ItemName, y => y);
+                ).ToList();
+                var temp = new List<AlbionItemMappings>();
+                foreach(var item in results.Where(x=>x.Tier > 3))
+                {
+                    temp.Add(new AlbionItemMappings
+                    {
+                        ItemCode = item.ItemCode + "_LEVEL1@1",
+                        ItemName = "[U] " + item.ItemName,
+                        Tier = item.Tier,
+                        Bussines = item.Bussines,
+                        Category = item.Category
+                    });
+                    temp.Add(new AlbionItemMappings
+                    {
+                        ItemCode = item.ItemCode + "_LEVEL2@2",
+                        ItemName = "[R] " + item.ItemName,
+                        Tier = item.Tier,
+                        Bussines = item.Bussines,
+                        Category = item.Category
+                    });
+                    temp.Add(new AlbionItemMappings
+                    {
+                        ItemCode = item.ItemCode + "_LEVEL3@3",
+                        ItemName = "[E] " + item.ItemName,
+                        Tier = item.Tier,
+                        Bussines = item.Bussines,
+                        Category = item.Category
+                    });
+                    temp.Add(new AlbionItemMappings
+                    {
+                        ItemCode = item.ItemCode + "@1",
+                        ItemName = "[U] " +  item.ItemName,
+                        Tier = item.Tier,
+                        Bussines = item.Bussines,
+                        Category = item.Category
+                    });
+                    temp.Add(new AlbionItemMappings
+                    {
+                        ItemCode = item.ItemCode + "@2",
+                        ItemName = "[R] " + item.ItemName,
+                        Tier = item.Tier,
+                        Bussines = item.Bussines,
+                        Category = item.Category
+                    });
+                    temp.Add(new AlbionItemMappings
+                    {
+                        ItemCode = item.ItemCode + "@3",
+                        ItemName = "[E] " + item.ItemName,
+                        Tier = item.Tier,
+                        Bussines = item.Bussines,
+                        Category = item.Category
+                    });
+                }
+
+                results.AddRange(temp);
+                mappings = results.ToDictionary(x => x.ItemCode, y => y);
             }
         }
     }
